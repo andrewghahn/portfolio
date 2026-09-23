@@ -1,0 +1,44 @@
+/*
+  Themes = "seasons" of the site.
+  Each theme only redefines these variables; every page reads them.
+  To create a new look: copy a block, rename it, change the values,
+  then set `theme` in src/data/site.ts.
+*/
+
+[data-theme='default'] {
+  --bg: #ffffff;
+  --surface: #f5f6f8;
+  --text: #1a1d23;
+  --muted: #5b6270;
+  --border: #e2e5ea;
+  --accent: #1f6feb;
+  --accent-contrast: #ffffff;
+  --font-body: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-heading: var(--font-body);
+  --radius: 10px;
+}
+
+@media (prefers-color-scheme: dark) {
+  [data-theme='default'] {
+    --bg: #0f1115;
+    --surface: #181b21;
+    --text: #e8eaee;
+    --muted: #9aa1ad;
+    --border: #2a2e36;
+    --accent: #58a6ff;
+    --accent-contrast: #0f1115;
+  }
+}
+
+[data-theme='autumn'] {
+  --bg: #fbf6ef;
+  --surface: #f2e8da;
+  --text: #2b1d14;
+  --muted: #74604f;
+  --border: #e3d3bd;
+  --accent: #b5471b;
+  --accent-contrast: #ffffff;
+  --font-body: Georgia, 'Times New Roman', serif;
+  --font-heading: var(--font-body);
+  --radius: 2px;
+}

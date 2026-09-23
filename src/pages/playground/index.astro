@@ -1,0 +1,46 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { url } from '../../lib/url';
+
+// Add an entry here whenever you create a new experiment in src/pages/playground/.
+const experiments = [
+  {
+    title: 'Color mixer',
+    href: '/playground/color-mixer',
+    description: 'My first React component: sliders, state, and live updates.',
+  },
+];
+---
+
+<BaseLayout title="Playground">
+  <h1>Playground</h1>
+  <p class="muted">Small experiments, half-finished ideas, and things I'm learning.</p>
+  <div class="grid">
+    {
+      experiments.map((exp) => (
+        <a class="card item" href={url(exp.href)}>
+          <h3>{exp.title}</h3>
+          <p class="muted">{exp.description}</p>
+        </a>
+      ))
+    }
+  </div>
+</BaseLayout>
+
+<style>
+  .grid {
+    display: grid;
+    gap: 1rem;
+  }
+  .item {
+    color: inherit;
+    text-decoration: none;
+  }
+  .item:hover {
+    border-color: var(--accent);
+  }
+  .item h3,
+  .item p {
+    margin: 0 0 0.25rem;
+  }
+</style>

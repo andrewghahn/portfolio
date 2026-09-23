@@ -1,0 +1,101 @@
+---
+// Every page is wrapped in this layout: <head>, header nav, and footer.
+import '../styles/global.css';
+import { site, nav } from '../data/site';
+import { url } from '../lib/url';
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title, description = site.description } = Astro.props;
+const pageTitle = title ? `${title} · ${site.name}` : site.name;
+
+// Highlight the nav link for the section we're in.
+const current = Astro.url.pathname;
+const isActive = (href: string) =>
+  href === '/' ? current === url('/') || current === url('') : current.startsWith(url(href));
+---
+
+<!doctype html>
+<html lang="en" data-theme={site.theme}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <link rel="icon" type="image/svg+xml" href={url('/favicon.svg')} />
+    <title>{pageTitle}</title>
+  </head>
+  <body>
+    <header class="container site-header">
+      <a class="brand" href={url('/')}>{site.name}</a>
+      <nav>
+        {
+          nav.map((item) => (
+            <a href={url(item.href)} aria-current={isActive(item.href) ? 'page' : undefined}>
+              {item.label}
+            </a>
+          ))
+        }
+      </nav>
+    </header>
+
+    <main class="container">
+      <slot />
+    </main>
+
+    <footer class="container site-footer muted">
+      <span>© {new Date().getFullYear()} {site.name}</span>
+      <span>
+        {site.links.map((link) => <a href={link.href}>{link.label}</a>)}
+      </span>
+    </footer>
+  </body>
+</html>
+
+<style>
+  .site-header {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem 1.5rem;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+  .brand {
+    font-weight: 700;
+    color: var(--text);
+    text-decoration: none;
+  }
+  nav {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+  nav a {
+    color: var(--muted);
+    text-decoration: none;
+  }
+  nav a[aria-current='page'],
+  nav a:hover {
+    color: var(--text);
+  }
+  main {
+    min-height: 60vh;
+  }
+  .site-footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 4rem;
+    padding-top: 1.5rem;
+    padding-bottom: 2rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.9rem;
+  }
+  .site-footer a {
+    margin-left: 1rem;
+  }
+</style>
