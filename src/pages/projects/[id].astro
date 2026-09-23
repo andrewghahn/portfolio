@@ -1,0 +1,28 @@
+---
+// One page per file in src/content/projects/.
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { url } from '../../lib/url';
+
+export async function getStaticPaths() {
+  const projects = await getCollection('projects');
+  return projects.map((project) => ({ params: { id: project.id }, props: { project } }));
+}
+
+const { project } = Astro.props;
+const { Content } = await render(project);
+const { title, summary, year, tags, link } = project.data;
+---
+
+<BaseLayout title={title} description={summary}>
+  <article>
+    <p><a href={url('/projects')}>← All projects</a></p>
+    <h1>{title}</h1>
+    <p class="muted">
+      {year}
+      {tags.length > 0 && ` · ${tags.join(', ')}`}
+    </p>
+    {link && <p><a class="button" href={link}>Visit project</a></p>}
+    <Content />
+  </article>
+</BaseLayout>

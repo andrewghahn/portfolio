@@ -1,0 +1,16 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ColorMixer from '../../components/react/ColorMixer.tsx';
+import { url } from '../../lib/url';
+---
+
+<BaseLayout title="Color mixer">
+  <p><a href={url('/playground')}>← Playground</a></p>
+  <h1>Color mixer</h1>
+  <p class="muted">
+    A React component with state. Read the source in
+    <code>src/components/react/ColorMixer.tsx</code>.
+  </p>
+  <!-- client:visible = load this component's JavaScript when it scrolls into view. -->
+  <ColorMixer client:visible />
+</BaseLayout>

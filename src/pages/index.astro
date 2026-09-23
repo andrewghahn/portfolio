@@ -1,0 +1,72 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import { site } from '../data/site';
+import { url } from '../lib/url';
+
+const projects = (await getCollection('projects'))
+  .sort((a, b) => a.data.order - b.data.order)
+  .slice(0, 3);
+
+const posts = (await getCollection('blog', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+---
+
+<BaseLayout>
+  <section class="hero">
+    <h1>Hi, I'm {site.name}.</h1>
+    <p class="lead">{site.tagline}</p>
+    <p class="muted">
+      A short intro about who you are, what you work on, and what you're curious about. Edit this in
+      <code>src/pages/index.astro</code>.
+    </p>
+    <a class="button" href={url('/projects')}>See my work</a>
+  </section>
+
+  <section>
+    <h2>Featured projects</h2>
+    <div class="grid">
+      {projects.map((project) => <ProjectCard project={project} />)}
+    </div>
+  </section>
+
+  <section>
+    <h2>Recent writing</h2>
+    <ul class="posts">
+      {
+        posts.map((post) => (
+          <li>
+            <a href={url(`/blog/${post.id}`)}>{post.data.title}</a>
+            <span class="muted"> · {post.data.date.toLocaleDateString('en-US', { dateStyle: 'medium' })}</span>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    padding: 3rem 0 2rem;
+  }
+  .hero h1 {
+    font-size: clamp(2rem, 6vw, 3rem);
+    margin: 0 0 0.5rem;
+  }
+  .lead {
+    font-size: 1.25rem;
+    margin: 0 0 1rem;
+  }
+  section {
+    margin-bottom: 2.5rem;
+  }
+  .grid {
+    display: grid;
+    gap: 1rem;
+  }
+  .posts {
+    padding-left: 1.1rem;
+  }
+</style>

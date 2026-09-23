@@ -1,0 +1,44 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { experience, skills } from '../data/resume';
+---
+
+<BaseLayout title="Resume">
+  <h1>Resume</h1>
+
+  <h2>Experience</h2>
+  {
+    experience.map((job) => (
+      <section class="job">
+        <h3>
+          {job.role} <span class="muted">· {job.company}</span>
+        </h3>
+        <p class="muted period">{job.period}</p>
+        <ul>
+          {job.points.map((point) => (
+            <li>{point}</li>
+          ))}
+        </ul>
+      </section>
+    ))
+  }
+
+  <h2>Skills</h2>
+  <div class="skills">
+    {skills.map((skill) => <span class="tag">{skill}</span>)}
+  </div>
+</BaseLayout>
+
+<style>
+  .job h3 {
+    margin-bottom: 0;
+  }
+  .period {
+    margin: 0.25rem 0 0;
+  }
+  .skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+</style>
